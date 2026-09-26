@@ -1,0 +1,56 @@
+{
+  "approval_scope": "synthetic-only",
+  "generator": "AMHSTrafficLab",
+  "map": "Synthetic-Grid",
+  "seed": 2026,
+  "routing": "Dijkstra",
+  "fleet_size": 12,
+  "duration_seconds": 240.0,
+  "map_counts": {
+    "nodes": 24,
+    "directed_rails": 76,
+    "areas": 3
+  },
+  "route_example": [
+    "N00",
+    "N01",
+    "N02",
+    "N12",
+    "N13",
+    "N23",
+    "N33",
+    "N34",
+    "N35"
+  ],
+  "areas": [
+    {
+      "id": "AREA-A",
+      "occupancy": 3,
+      "low_water": 4,
+      "high_water": 9,
+      "closed": false
+    },
+    {
+      "id": "AREA-B",
+      "occupancy": 6,
+      "low_water": 4,
+      "high_water": 9,
+      "closed": false
+    },
+    {
+      "id": "AREA-C",
+      "occupancy": 3,
+      "low_water": 2,
+      "high_water": 6,
+      "closed": false
+    }
+  ],
+  "kpi": {
+    "completed_tasks_num": 3,
+    "throughput_tasks_per_hour": 45.000000000002075,
+    "task_completion_time_mean_sec": 21.877777777777663,
+    "vehicle_utilization_pct": 36.64004629629619,
+    "deadlock_count": 2
+  },
+  "disclaimer": "Illustrative synthetic run; not a paper result or method comparison."
+}
