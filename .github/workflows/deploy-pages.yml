@@ -1,0 +1,64 @@
+name: Deploy website to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build static website
+        run: npm run build
+
+      - name: Prepare clean URLs
+        run: |
+          mkdir -p dist/client/benchmark dist/client/platform dist/client/validation dist/client/documentation
+          cp dist/client/benchmark.html dist/client/benchmark/index.html
+          cp dist/client/platform.html dist/client/platform/index.html
+          cp dist/client/validation.html dist/client/validation/index.html
+          cp dist/client/documentation.html dist/client/documentation/index.html
+          rm -f dist/client/.assetsignore dist/client/_headers
+          rm -rf dist/client/.vite
+          touch dist/client/.nojekyll
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist/client
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
